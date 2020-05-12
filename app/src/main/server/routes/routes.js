@@ -3,12 +3,14 @@ var appRouter = function (app) {
     res.status(200).send("Welcome to our restful API");
   });
   app.post("/login", function(req, res) {
-    res.status(200).send("Login .....");
+    var u = req.body.username;
+    var p = req.body.password
+    res.status(200).send("Login (" + u + "," + p +")");
   });
   app.post("/register", function(req, res) {
     res.status(200).send("Register .....");
   });
-  app.get("/getinfo", function(req, res) {
+  app.get("/userinfo", function(req, res) {
     res.status(200).send("Getinfo .....");
   });
   app.use(function (req,res) {
