@@ -1,15 +1,38 @@
+//
+var USERS = require('../models/users');
+
 var appRouter = function (app) {
+  //Kiểm tra API có hoạt động hay không
   app.get("/", function(req, res) {
     res.status(200).send("Welcome to our restful API");
   });
+
+  //Hàm hiển thị tất cả users trong Database
+  app.get("/users", function(req, res) {
+    USERS.find({},function (err,_data) {
+    if (err) return res.status(404);
+    res.status(200).json({'data':_data});
+    });
+  });
+
+  //Hàm kiểm tra đăng nhập
   app.post("/login", function(req, res) {
     var u = req.body.username;
-    var p = req.body.password
-    res.status(200).send("Login (" + u + "," + p +")");
+    var p = req.body.password;
+    USERS.find({username:u,password:p},function (err,_data) {
+        if (err) return res.status(404).json({'msg':'Error'});
+        //console.log(_data);
+        if (!_data || _data.length == 0) res.status(405).json({'msg':'FAILED'});
+        else res.status(200).json({'msg':'OKIE'});
+    });
   });
+
+  //Hàm đăng ký mới users
   app.post("/register", function(req, res) {
     res.status(200).send("Register .....");
   });
+
+  //Hàm nhận thông tin tài khoản sau khi đã login
   app.get("/userinfo", function(req, res) {
     res.status(200).send("Getinfo .....");
   });
