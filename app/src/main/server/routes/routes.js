@@ -29,7 +29,16 @@ var appRouter = function (app) {
 
   //Hàm đăng ký mới users
   app.post("/register", function(req, res) {
-    res.status(200).send("Register .....");
+  	var data = {};
+  	data.username = req.body.username;
+  	data.password = req.body.password;
+  	data.fullname = req.body.fullname;
+  	
+  	//Nên kiểm tra username đã tồn tại hay chưa để tránh việc trùng username
+		USERS.create(data,function (err,_data) {
+			if (err) return res.status(404).json({'msg':'Error'});
+			res.status(200).json({'msg':'Register OKIE'});			
+		});
   });
 
   //Hàm nhận thông tin tài khoản sau khi đã login
